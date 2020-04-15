@@ -62,7 +62,13 @@ class FlutterBeacon {
 
   /// Initialize scanning API.
   Future<bool> get initializeScanning async {
-    return await _methodChannel.invokeMethod('initialize');
+    if(Platform.isAndroid) {
+      return await _methodChannel.invokeMethod('initialize');
+    }
+    // ios
+    int result = await _methodChannel.invokeMethod('initialize');
+    if(result > 0) return true;
+    return false;
   }
 
   /// Initialize scanning API and check required permissions.
@@ -74,7 +80,13 @@ class FlutterBeacon {
   /// requestWhenInUse or requestAlways location services and check
   /// whether location services is enabled.
   Future<bool> get initializeAndCheckScanning async {
-    return await _methodChannel.invokeMethod('initializeAndCheck');
+    if(Platform.isAndroid) {
+      return await _methodChannel.invokeMethod('initializeAndCheck');
+    }
+    // ios
+    int result = await _methodChannel.invokeMethod('initializeAndCheck');
+    if(result > 0) return true;
+    return false;
   }
 
   /// Check for the latest [AuthorizationStatus] from device.
